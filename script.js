@@ -1,10 +1,9 @@
 'use strict';
-/*
-document.querySelector('.message').textContent = '✅ CORRECT NUMBER';
-document.querySelector('.number').textContent = 13;
-document.querySelector('.score').textContent = 1;
-document.querySelector('.guess').value = 12;
-*/
+
+//document.querySelector('.message').textContent = '❌ NO NUMBER';
+// document.querySelector('.number').textContent = 13;
+// document.querySelector('.score').textContent = 1;
+// document.querySelector('.guess').value = 12;
 
 let number = Math.trunc(Math.random() * 20 + 1);
 let score = 20;
@@ -12,26 +11,28 @@ let highScore = 0;
 
 console.log(number);
 
+function displayMessage(mess) {
+  return (document.querySelector('.message').textContent = mess);
+}
+
 document.querySelector('.check').addEventListener('click', function () {
-  const guess = Number(document.querySelector('.guess').value);
-
-  if (!guess) {
-    document.querySelector('.message').textContent = '❌ NO NUMBER';
-  }
-
+  /// Nếu thua
   if (score < 1) {
     alert('Bạn đã thua trò chơi hãy chơi lại nhé');
     setTimeout(resetGame, 0);
   }
 
-  if (guess > number) {
+  const guess = Number(document.querySelector('.guess').value);
+  //Nếu không điền số
+  if (!guess) {
     document.querySelector('body').style.backgroundColor = '#b34747';
-    document.querySelector('.message').textContent = '📈 Too high';
-    score--;
-    document.querySelector('.score').textContent = score;
-  } else if (guess < number) {
+    displayMessage('❌ NO NUMBER');
+    // Nếu số lớn hơn đáp án
+  } else if (guess !== number) {
     document.querySelector('body').style.backgroundColor = '#b34747';
-    document.querySelector('.message').textContent = '📉 Too low';
+    guess > number
+      ? displayMessage('📈 Too high')
+      : displayMessage('📉 Too low');
     score--;
     document.querySelector('.score').textContent = score;
   } else if (guess === number) {
@@ -43,7 +44,7 @@ document.querySelector('.check').addEventListener('click', function () {
     document.querySelector('.number').style.width = '30rem';
     document.querySelector('.score').textContent = score;
     document.querySelector('.number').textContent = number;
-    document.querySelector('.message').textContent = '✅ CORRECT NUMBER';
+    displayMessage('✅ CORRECT NUMBER');
   }
 });
 
@@ -57,6 +58,7 @@ function resetGame() {
   document.querySelector('.number').style.width = '15rem';
   document.querySelector('.score').textContent = score;
   document.querySelector('.number').textContent = '?';
-  document.querySelector('.message').textContent = 'Start guessing...';
+  displayMessage('Start guessing...');
 }
+// btn play again
 document.querySelector('.again').addEventListener('click', resetGame);
